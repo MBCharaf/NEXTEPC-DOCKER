@@ -27,7 +27,7 @@ mongorestore -d nextepc nexepcdb/nextepc/
 ## NEXTEPC docker build
 * get the docker file and go to the cloned directory:
 ```bash
-cd nextepc-docker 
+cd NEXTEPC-DOCKER 
 ```
 * Build the docker image in the Dockerfile directory:
 ```bash
