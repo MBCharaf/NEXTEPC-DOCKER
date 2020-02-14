@@ -9,11 +9,16 @@ tested with srslte enb and srsue and COTS UEs
 sudo apt-get update 
 sudo apt install docker-ce docker-ce-cli containerd.io
 ```
+## Software Defined Network for connecting MongoDB to the WebGUI:
+```bash
+docker network create my-mongo-node
+```
+
 ## MongoDB docker
 * create a mongodb docker and run it:
 ```bash
 mkdir ~/data
-docker run -d -v ~/data:/data/db --name nextepcdb --network host mongo 
+docker run -d -v ~/data:/data/db --name nextepcdb -p 27017:27017 --network my-mongo-node mongo 
 ```
 * get dump from one mongodb into another first get the dump:
 ```bash
@@ -73,4 +78,10 @@ sudo iptables -t nat -A POSTROUTING -o pgwtun -j MASQUERADE
 ```
 Configuration file can be found in .config and shuld be change accourding to the network setup 
 
-<b> to do: add the nextepc webgui to the docker and configure the NAT tables correctly </b>
+##  NextEPC Web GUI:
+build the NEXTEPC GUI interface:
+```bash
+cd webgui
+docker build -t besherch/node-webui-nextepc .
+
+docker run -p 49160:3000 --network my-mongo-node -e DB_URI=mongodb://nextepcdb:27017 -d besherch/node-webui-nextepc
